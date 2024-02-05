@@ -1,10 +1,10 @@
 import style from '~/components/NewNote.css'
 function NewNote() {
   return (
-    <form action="post" id="note-form">
+    <form method='post' id="note-form">
       <p>
-        <label htmlFor="tittle">Titlle</label>
-        <input type="text" id="tittle" name="tittle" required />
+        <label htmlFor="title">Title</label>
+        <input type="text" id="title" name="title" required />
       </p>
       <p>
         <label htmlFor="content">Content</label>
