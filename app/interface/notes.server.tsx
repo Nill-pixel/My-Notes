@@ -3,3 +3,7 @@ export interface Notes {
   content: string
   title: string
 }
+
+export interface MessageError {
+  message: string
+}

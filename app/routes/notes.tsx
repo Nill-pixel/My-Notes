@@ -1,5 +1,5 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData, useRouteError } from "@remix-run/react";
 import NewNote, { links as newNoteLinks } from "~/components/NewNote";
 import NoteList, { links as noteListLinks } from "~/components/NoteList";
 import { getStoreNotes, storeNotes } from "~/data/notes";
@@ -25,6 +25,11 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
   const noteData = Object.fromEntries(formData)
 
+  if (noteData.title.toString().length < 5) {
+    return { message: 'Invalid title - must be at least 5 characters long.' }
+  }
+
+
   const existingNotes = await getStoreNotes()
   noteData.id = new Date().toISOString()
   const updateNotes = existingNotes.concat(noteData)
@@ -34,4 +39,15 @@ export const action: ActionFunction = async ({ request }) => {
 
 export function links() {
   return [...newNoteLinks(), ...noteListLinks()]
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError() as Error
+  return (
+    <main className="error">
+      <h1>An error accurred! </h1>
+      <p> {error.message} </p>
+      <p> Back to <Link to="/"> safety </Link>!</p>
+    </main>
+  )
 }

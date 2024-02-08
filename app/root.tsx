@@ -1,14 +1,18 @@
 import stylesheet from "~/css/main.css";
 import type { LinksFunction } from "@remix-run/node";
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteError,
 } from "@remix-run/react";
 import MainNavigation from "./components/MainNavigation";
+import { ErrorBoundaryComponent } from "@remix-run/react/dist/routeModules";
+import { MessageError } from "./interface/notes.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -34,4 +38,27 @@ export default function App() {
     </html>
   );
 }
+export function ErrorBoundary() {
+  const error = useRouteError() as Error;
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <header>
+          <MainNavigation />
+        </header>
+        <main className="error">
+          <h1>An error accurred!</h1>
+          <p>{error.message}</p>
+          <p>Back to <Link to="/">safety</Link>!</p>
+        </main>
 
+        <Scripts />
+      </body>
+    </html>
+  );
+}
