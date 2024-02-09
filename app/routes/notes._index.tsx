@@ -1,5 +1,5 @@
-import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
-import { Link, useLoaderData, useRouteError } from "@remix-run/react";
+import { ActionFunction, LoaderFunction, json, redirect } from "@remix-run/node";
+import { Link, isRouteErrorResponse, useLoaderData, useRouteError } from "@remix-run/react";
 import NewNote, { links as newNoteLinks } from "~/components/NewNote";
 import NoteList, { links as noteListLinks } from "~/components/NoteList";
 import { getStoreNotes, storeNotes } from "~/data/notes";
@@ -18,6 +18,15 @@ export default function NotesPage() {
 }
 export const loader: LoaderFunction = async () => {
   const notes: Notes[] = await getStoreNotes()
+
+  if (!notes || notes.length === 0) {
+    throw json({ message: 'Could not find any notes.' },
+      {
+        status: 404,
+        statusText: 'Not found'
+      })
+  }
+
   return { notes }
 }
 
@@ -41,8 +50,17 @@ export function links() {
   return [...newNoteLinks(), ...noteListLinks()]
 }
 
-export function ErrorBoundary() {
+export const ErrorBoundary = () => {
   const error = useRouteError() as Error
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <main>
+        <NewNote />
+        <p className="info-message"> {error.data.message} </p>
+      </main>
+    )
+  }
   return (
     <main className="error">
       <h1>An error accurred! </h1>

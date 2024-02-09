@@ -11,8 +11,6 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import MainNavigation from "./components/MainNavigation";
-import { ErrorBoundaryComponent } from "@remix-run/react/dist/routeModules";
-import { MessageError } from "./interface/notes.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },

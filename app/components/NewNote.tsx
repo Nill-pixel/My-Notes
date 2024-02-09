@@ -25,6 +25,6 @@ const NewNote = () => {
 }
 
 export default NewNote
-export function links() {
+export const links = () => {
   return [{ rel: 'stylesheet', href: style }]
 }
