@@ -8,6 +8,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
   useRouteError,
 } from "@remix-run/react";
 import MainNavigation from "./components/MainNavigation";
@@ -38,6 +39,31 @@ export default function App() {
 }
 export function ErrorBoundary() {
   const error = useRouteError() as Error;
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <html>
+        <head>
+          <title>Oh no!</title>
+          <Meta />
+          <Links />
+        </head>
+        <title>{error.statusText}</title>
+        <body>
+          <header>
+            <MainNavigation />
+          </header>
+          <main className="error">
+            <h1>{error.statusText}</h1>
+            <p>{error.data.message}</p>
+            <p>Back to <Link to="/">safety</Link>!</p>
+          </main>
+
+          <Scripts />
+        </body>
+      </html>
+    )
+  }
   return (
     <html>
       <head>

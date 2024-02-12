@@ -1,4 +1,4 @@
-import { ActionFunction, LoaderFunction, json, redirect } from "@remix-run/node";
+import { ActionFunction, MetaFunction, LoaderFunction, json, redirect } from "@remix-run/node";
 import { Link, isRouteErrorResponse, useLoaderData, useRouteError } from "@remix-run/react";
 import NewNote, { links as newNoteLinks } from "~/components/NewNote";
 import NoteList, { links as noteListLinks } from "~/components/NoteList";
@@ -48,6 +48,15 @@ export const action: ActionFunction = async ({ request }) => {
 
 export function links() {
   return [...newNoteLinks(), ...noteListLinks()]
+}
+
+export const meta: MetaFunction = () => {
+  return [
+    {
+      title: 'All Notes',
+      desc: 'Manege your notes with ease.'
+    }
+  ]
 }
 
 export const ErrorBoundary = () => {

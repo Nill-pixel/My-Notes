@@ -1,4 +1,4 @@
-import { LoaderFunction } from "@remix-run/node";
+import { LoaderFunction, MetaFunction, json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import style from '~/css/note-details.css'
 import { getStoreNotes } from "~/data/notes";
@@ -26,8 +26,19 @@ export const loader: LoaderFunction = async ({ params }) => {
   const noteId = params.noteId
   const selectedNote = notes.find((note) => note.id === noteId)
 
+  if (!selectedNote) {
+    throw json(
+      { message: 'Could not find note id ' + noteId },
+      { status: 404 }
+    )
+  }
+
   return { selectedNote }
 }
 export const links = () => {
   return [{ rel: 'stylesheet', href: style }]
+}
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data.selectedNote.title }]
 }
