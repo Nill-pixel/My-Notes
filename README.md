@@ -1,3 +1,7 @@
+# Welcome to !
+
+- [My Notes](https://remix-course-ten.vercel.app/)
+
 # Welcome to Remix!
 
 - [Remix Docs](https://remix.run/docs)
