@@ -16,8 +16,8 @@ const NoteList: React.FC<NoteListProps> = ({ notes }) => {
                 <ul className='note-meta'>
                   <li>#{index + 1}</li>
                   <li>
-                    <time dateTime={note.id}>
-                      {new Date(note.id).toLocaleDateString('pt-PT', {
+                    <time dateTime={note.date}>
+                      {new Date(note.date).toLocaleDateString('pt-PT', {
                         day: 'numeric',
                         month: 'short',
                         year: 'numeric',

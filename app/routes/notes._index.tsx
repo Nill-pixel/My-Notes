@@ -4,6 +4,7 @@ import NewNote, { links as newNoteLinks } from "~/components/NewNote";
 import NoteList, { links as noteListLinks } from "~/components/NoteList";
 import { getStoreNotes, storeNotes } from "~/data/notes";
 import { Notes } from "~/interface/notes.server";
+import { addNotes, getNotes } from "~/utils/note.server";
 
 interface NoteListProps {
   notes: Notes[]
@@ -17,7 +18,7 @@ export default function NotesPage() {
   </main>
 }
 export const loader: LoaderFunction = async () => {
-  const notes: Notes[] = await getStoreNotes()
+  const notes = await getNotes()
 
   if (!notes || notes.length === 0) {
     throw json({ message: 'Could not find any notes.' },
@@ -32,17 +33,13 @@ export const loader: LoaderFunction = async () => {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData()
-  const noteData = Object.fromEntries(formData)
+  const noteData = Object.fromEntries(formData) as unknown as Notes
 
   if (noteData.title.toString().length < 5) {
     return { message: 'Invalid title - must be at least 5 characters long.' }
   }
 
-
-  const existingNotes = await getStoreNotes()
-  noteData.id = new Date().toISOString()
-  const updateNotes = existingNotes.concat(noteData)
-  await storeNotes(updateNotes)
+  await addNotes(noteData)
   return redirect('/notes')
 }
 
