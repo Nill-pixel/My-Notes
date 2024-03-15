@@ -3,6 +3,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import style from '~/css/note-details.css'
 import { getStoreNotes } from "~/data/notes";
 import { Notes } from "~/interface/notes.server";
+import { getNotes } from "~/utils/note.server";
 
 interface NoteListProps {
   selectedNote: Notes
@@ -22,7 +23,7 @@ export default function NoteDetailsPage() {
 }
 export const loader: LoaderFunction = async ({ params }) => {
 
-  const notes: Notes[] = await getStoreNotes()
+  const notes = await getNotes()
   const noteId = params.noteId
   const selectedNote = notes.find((note) => note.id === noteId)
 
