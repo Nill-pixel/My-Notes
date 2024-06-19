@@ -1,6 +1,6 @@
 # Welcome to !
 
-- [My Notes](https://remix-course-ten.vercel.app/)
+- [My Notes](https://remix-course-6xgjd4vmy-nill-pixel.vercel.app/)
 
 # Welcome to Remix!
 
